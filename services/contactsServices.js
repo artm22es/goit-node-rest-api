@@ -18,6 +18,17 @@ export async function getContactById(contactId) {
   return result || null;
 }
 
+export async function updateContactById(contactId, data) {
+  const contacts = await listContacts();
+  const index = contacts.findIndex((item) => item.id === contactId);
+  if (index === -1) {
+    return null;
+  }
+  contacts[index] = { ...contacts[index], ...data };
+  await updateContacts(contacts);
+  return contacts[index];
+}
+
 export async function removeContact(contactId) {
   const contacts = await listContacts();
   const index = contacts.findIndex((item) => item.id === contactId);
