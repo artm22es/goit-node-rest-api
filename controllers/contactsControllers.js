@@ -27,8 +27,11 @@ export const createContact = ctrlWrapper(async (req, res) => {
 export const updateContact = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
   const result = await contactsServices.updateContactById(id, req.body);
+  const { name, email, phone } = req.body;
   if (!result) {
     throw HttpError(404);
+  } else if (!name && !email && !phone) {
+    throw HttpError(400, "Body must have at least one field");
   }
 
   res.json(result);
